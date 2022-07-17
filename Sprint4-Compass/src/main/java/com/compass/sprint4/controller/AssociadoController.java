@@ -39,39 +39,39 @@ public class AssociadoController {
 	    }
 
 	    @PostMapping("/partidos")
-	    public ResponseEntity<Void> addAssociateToPoliticalParty (@RequestBody @Valid VinculoDtoRequest request){
-	        associadoService.addAssociateToPoliticalParty(request);
+	    public ResponseEntity<Void> addAssociadoToPartido (@RequestBody @Valid VinculoDtoRequest request){
+	        associadoService.addAssociadoToPartido(request);
 	        return ResponseEntity.status(201).build();
 	    }
 
 	    @GetMapping
-	    public ResponseEntity<List<AssociadoDtoResponse>> listAllAssociates(@RequestParam(required = false) String cargoPolitico,
+	    public ResponseEntity<List<AssociadoDtoResponse>> listAllAssociados(@RequestParam(required = false) String cargoPolitico,
 	            @RequestParam(required = false, defaultValue = "id") String sortBy){
 	        List<AssociadoDtoResponse> response = associadoService.getAll(cargoPolitico, sortBy);
 	        return ResponseEntity.ok(response);
 	    }
 
 	    @GetMapping("/{id}")
-	    public ResponseEntity<AssociadoDtoResponse> getAssociate(@PathVariable Long id){
+	    public ResponseEntity<AssociadoDtoResponse> getAssociado(@PathVariable Long id){
 	        AssociadoDtoResponse response = associadoService.getById(id);
 	        return ResponseEntity.ok(response);
 	    }
 
 	    @PutMapping("/{id}")
-	    public ResponseEntity<Void> updateAssociate(@RequestBody @Valid AssociadoDtoRequest associateDTO, @PathVariable Long id){
-	        associadoService.update(associateDTO, id);
+	    public ResponseEntity<Void> updateAssociado(@RequestBody @Valid AssociadoDtoRequest associadoDtoRequest, @PathVariable Long id){
+	        associadoService.update(associadoDtoRequest, id);
 	        return ResponseEntity.noContent().build();
 	    }
 
 	    @DeleteMapping("/{id}")
-	    public ResponseEntity<Void> deleteAssociate(@PathVariable Long id){
+	    public ResponseEntity<Void> delete(@PathVariable Long id){
 	        associadoService.delete(id);
 	        return ResponseEntity.noContent().build();
 	    }
 
 	    @DeleteMapping("/{idAssociate}/partidos/{idPoliticalParty}")
-	    public ResponseEntity<Void> deleteAssociateByPoliticalParty(@PathVariable Long idAssociate, @PathVariable Long idPoliticalParty){
-	        associadoService.deleteByPoliticalParty(idAssociate, idPoliticalParty);
+	    public ResponseEntity<Void> deleteAssociadoByPartido(@PathVariable Long idAssociado, @PathVariable Long idPartido){
+	        associadoService.deleteByPoliticalParty(idAssociado, idPartido);
 	        return ResponseEntity.noContent().build();
 	    }
 }

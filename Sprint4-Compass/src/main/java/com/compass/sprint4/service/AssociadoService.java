@@ -38,25 +38,25 @@ public class AssociadoService {
 			PartidoRepository partidoRepository2) {
 	}
 
-	public AssociadoDtoResponse save(AssociadoDtoRequest associateDTO) {
-		associadoValidate.validateCargoPolitico(associateDTO);
-		associadoValidate.validateSexo(associateDTO);
-		AssociadoEntity entity = modelMapper.map(associateDTO, AssociadoEntity.class);
+	public AssociadoDtoResponse save(AssociadoDtoRequest associadoDtoRequest) {
+		associadoValidate.validateCargoPolitico(associadoDtoRequest);
+		associadoValidate.validateSexo(associadoDtoRequest);
+		AssociadoEntity entity = modelMapper.map(associadoDtoRequest, AssociadoEntity.class);
 		AssociadoEntity savedEntity = associadoRepository.save(entity);
 		return modelMapper.map(savedEntity, AssociadoDtoResponse.class);
 	}
 
-	public void addAssociateToPoliticalParty(VinculoDtoRequest request) {
-		Long idAssociate = request.getIdAssociado();
+	public void addAssociadoToPartido(VinculoDtoRequest vinculoDtoRequest) {
+		Long idAssociate = vinculoDtoRequest.getIdAssociado();
 		associadoRepository.findById(idAssociate).orElseThrow(AssociadoInvalidException::new);
-		Long idPoliticalParty = request.getIdPartido();
-		associadoRepository.findById(idPoliticalParty).orElseThrow(PartidoInvalidException::new);
+		Long idPartido = vinculoDtoRequest.getIdPartido();
+		associadoRepository.findById(idPartido).orElseThrow(PartidoInvalidException::new);
 
 		AssociadoEntity entity = associadoRepository.getReferenceById(idAssociate);
 
 		if (entity.getPartido() == null) {
-			PartidoEntity referenceById = partidoRepository.getReferenceById(idPoliticalParty);
-			entity.setPartido(referenceById);
+			PartidoEntity referenciaById = partidoRepository.getReferenceById(idPartido);
+			entity.setPartido(referenciaById);
 			associadoRepository.save(entity);
 		} else {
 			throw new AssociadoInvalidException();
@@ -75,11 +75,11 @@ public class AssociadoService {
 		return modelMapper.map(AssociadoEntity, AssociadoDtoResponse.class);
 	}
 
-	public void update(AssociadoDtoRequest associateDTO, Long id) {
-		associadoValidate.validateCargoPolitico(associateDTO);
-		associadoValidate.validateSexo(associateDTO);
+	public void update(AssociadoDtoRequest associadoDtoRequest, Long id) {
+		associadoValidate.validateCargoPolitico(associadoDtoRequest);
+		associadoValidate.validateSexo(associadoDtoRequest);
 		AssociadoEntity AssociadoEntity = associadoRepository.findById(id).orElseThrow(AssociadoInvalidException::new);
-		modelMapper.map(associateDTO, AssociadoEntity);
+		modelMapper.map(associadoDtoRequest, AssociadoEntity);
 		associadoRepository.save(AssociadoEntity);
 	}
 
@@ -88,17 +88,17 @@ public class AssociadoService {
 		associadoRepository.deleteById(id);
 	}
 
-	public void deleteByPoliticalParty(Long idAssociate, Long idPoliticalParty) {
-		partidoRepository.findById(idPoliticalParty).orElseThrow(PartidoInvalidException::new);
-		associadoRepository.findById(idAssociate).orElseThrow(AssociadoInvalidException::new);
+	public void deleteByPoliticalParty(Long idAssociado, Long idPartido) {
+		partidoRepository.findById(idPartido).orElseThrow(PartidoInvalidException::new);
+		associadoRepository.findById(idAssociado).orElseThrow(AssociadoInvalidException::new);
 
-		AssociadoEntity referenceByIdAssociate = associadoRepository.getReferenceById(idAssociate);
-		PartidoEntity referenceByIdPoliticalParty = partidoRepository.getReferenceById(idPoliticalParty);
-		boolean equals = referenceByIdAssociate.getPartido().equals(referenceByIdPoliticalParty);
+		AssociadoEntity referenciaByIdAssociado = associadoRepository.getReferenceById(idAssociado);
+		PartidoEntity referenciaByIdPartido = partidoRepository.getReferenceById(idPartido);
+		boolean equals = referenciaByIdAssociado.getPartido().equals(referenciaByIdPartido);
 
 		if (equals) {
-			referenceByIdAssociate.setPartido(null);
-			associadoRepository.save(referenceByIdAssociate);
+			referenciaByIdAssociado.setPartido(null);
+			associadoRepository.save(referenciaByIdAssociado);
 		} else {
 			throw new AssociadoInvalidException();
 		}
