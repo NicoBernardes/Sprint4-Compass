@@ -1,12 +1,11 @@
 package com.compass.sprint4.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.compass.sprint4.enums.PartidoEnum;
 
@@ -18,11 +17,11 @@ public class PartidoDto {
 	private String sigla;
 	@NotNull
 	private PartidoEnum ideologia;
-	@DateTimeFormat(iso = ISO.DATE_TIME)
-	private Date dataDeFundacao;
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private LocalDate dataDeFundacao;
 
-	public PartidoDto(@NotBlank String nomeDoPartido, @NotBlank String sigla, @NotNull PartidoEnum ideologia,
-			Date dataDeFundacao) {
+	public PartidoDto(String nomeDoPartido, String sigla, PartidoEnum ideologia,
+			LocalDate dataDeFundacao) {
 		this.nomeDoPartido = nomeDoPartido;
 		this.sigla = sigla;
 		this.ideologia = ideologia;
@@ -41,7 +40,7 @@ public class PartidoDto {
 		return sigla;
 	}
 
-	public Date getDataDeFundacao() {
+	public LocalDate getDataDeFundacao() {
 		return dataDeFundacao;
 	}
 
@@ -49,11 +48,20 @@ public class PartidoDto {
 		return ideologia;
 	}
 
-//	public LocalDate formatar() {
-//		LocalDate date = LocalDate.now();
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//		String text = date.format(formatter);
-//		LocalDate parsedDate = LocalDate.parse(text, formatter);
-//		return parsedDate;
-//	}
+	public void setNomeDoPartido(String nomeDoPartido) {
+		this.nomeDoPartido = nomeDoPartido;
+	}
+
+	public void setSigla(String sigla) {
+		this.sigla = sigla;
+	}
+
+	public void setIdeologia(PartidoEnum ideologia) {
+		this.ideologia = ideologia;
+	}
+
+	public void setDataDeFundacao(LocalDate dataDeFundacao) {
+		this.dataDeFundacao = dataDeFundacao;
+	}
+
 }

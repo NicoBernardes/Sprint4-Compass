@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.compass.sprint4.dto.PartidoDto;
@@ -24,31 +25,32 @@ public class PartidoController {
 
 	@Autowired
 	private PartidoService partidoService;
-	
-	@PostMapping
-	public ResponseEntity<PartidoDto> post(@RequestBody @Valid PartidoDto request) {
-		PartidoDto response = partidoService.save(request);
-		return ResponseEntity.ok(response);
-	}
-	
+
 	@GetMapping
-	public ResponseEntity<List<PartidoDto>> get(){
-		List<PartidoDto> response = partidoService.get();
+	public ResponseEntity<List<PartidoDto>> get(@RequestParam(required = false) String ideologia,
+												@RequestParam(required = false, defaultValue = "id") String sortDescBy) {
+		List<PartidoDto> response = partidoService.get(ideologia, sortDescBy);
 		return ResponseEntity.ok(response);
 	}
-	
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<PartidoDto> getById(@PathVariable Long id) {
 		PartidoDto response = partidoService.getById(id);
 		return ResponseEntity.ok(response);
 	}
-	
+
+	@PostMapping
+	public ResponseEntity<PartidoDto> post(@RequestBody @Valid PartidoDto request) {
+		PartidoDto response = partidoService.save(request);
+		return ResponseEntity.ok(response);
+	}
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		partidoService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> post(@RequestBody @Valid PartidoDto request, @PathVariable Long id) {
 		partidoService.update(request, id);

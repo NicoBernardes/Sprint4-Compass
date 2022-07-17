@@ -1,9 +1,29 @@
 package com.compass.sprint4.enums;
 
-public enum PartidoEnum {
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-	DIREITA,
-	CENTRO,
-	ESQUERDA;
+public enum PartidoEnum {
 	
+	@JsonProperty("Direita")
+	DIREITA("Direita"), 
+	@JsonProperty("Centro")
+	CENTRO("Centro"),  
+	@JsonProperty("Esquerda")
+	ESQUERDA("Esquerda");
+
+	private String value;
+	
+	PartidoEnum(String value) {
+		this.value = value;
+	}
+
+	public String getValue() {
+		return value;
+	}
+	
+	@Override
+	public String toString() {
+		return value;
+	}
+
 }

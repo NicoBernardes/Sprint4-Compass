@@ -1,18 +1,19 @@
 package com.compass.sprint4.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import com.compass.sprint4.enums.PartidoEnum;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
-
+@Table(name = "partido_entity")
 @Entity
 public class PartidoEntity {
 
@@ -25,12 +26,14 @@ public class PartidoEntity {
 	private String sigla;
 	@NotNull
 	private PartidoEnum ideologia;
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private Date dataDeFundacao;
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private LocalDate dataDeFundacao;
 
-	public PartidoEntity(String nomeDoPartido, String sigla, Date dataDeFundacao) {
+	public PartidoEntity(Long id, String nomeDoPartido, String sigla, PartidoEnum ideologia, LocalDate dataDeFundacao) {
+		this.id = id;
 		this.nomeDoPartido = nomeDoPartido;
 		this.sigla = sigla;
+		this.ideologia = ideologia;
 		this.dataDeFundacao = dataDeFundacao;
 	}
 
@@ -62,11 +65,11 @@ public class PartidoEntity {
 		this.sigla = sigla;
 	}
 
-	public Date getDataDeFundacao() {
+	public LocalDate getDataDeFundacao() {
 		return dataDeFundacao;
 	}
 
-	public void setDataDeFundacao(Date dataDeFundacao) {
+	public void setDataDeFundacao(LocalDate dataDeFundacao) {
 		this.dataDeFundacao = dataDeFundacao;
 	}
 
